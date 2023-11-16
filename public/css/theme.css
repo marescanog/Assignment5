@@ -128,3 +128,7 @@ li a:hover {
 #dark-head{
     background-color: rgb(255, 227, 255) !important; 
 }
+
+.no-ul-style{
+    list-style-type: none;
+}

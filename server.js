@@ -61,18 +61,18 @@ app.get("/students", (req, res) => {
     if(req.query.course){
         collegeData.getStudentsByCourse(req.query.course)
         .then((colDataRes)=>{
-            res.send(colDataRes);
+            res.render("students",{layout:"main", students: colDataRes});
         })
         .catch((colDataErr)=>{
-            res.send({message: colDataErr});
+            res.render("students",{layout:"main", message: "no results"});
         });
     } else {
         collegeData.getAllStudents()
         .then((colDataRes)=>{
-            res.send(colDataRes);
+            res.render("students",{layout:"main", students: colDataRes});
         })
         .catch((colDataErr)=>{
-            res.send({message: colDataErr});
+            res.render("students",{layout:"main", message: "no results"});
         });
     }
 });
