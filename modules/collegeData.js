@@ -28,7 +28,7 @@ function initialize () {
 function getAllStudents () {
     return new Promise((res2, rej2)=>{
         if(dataCollection?.students == null || dataCollection?.students.length == 0){
-            rej2("no results returned");
+            rej2("no results");
         } else {
             res2(dataCollection.students);
         }
@@ -38,12 +38,12 @@ function getAllStudents () {
 function getTAs () {
     return new Promise((res3, rej3)=>{
         if(dataCollection?.students == null || dataCollection?.students.length == 0){
-            rej3("no results returned A");
+            rej3("no results");
         } else {
             const filteredArr = dataCollection.students.filter(student => student.TA);
             
             if(filteredArr == null || filteredArr == 0){
-                rej3("no results returned B");
+                rej3("no results");
             } else {
                 res3(filteredArr);
             }
@@ -54,7 +54,7 @@ function getTAs () {
 function getCourses () {
     return new Promise((res4, rej4)=>{
         if(dataCollection?.courses == null || dataCollection?.courses.length == 0){
-            rej4("no results returned");
+            rej4("no results");
         } else {
             res4(dataCollection.courses);
         }
@@ -64,12 +64,12 @@ function getCourses () {
 function getStudentsByCourse (course) {
     return new Promise((res5, rej5)=>{
         if(course == null || course == "" || dataCollection?.students == null || dataCollection?.students.length == 0){
-            rej5("no results returned");
+            rej5("no results");
         } else {
             const filteredCoursesArr = dataCollection.students.filter(student => student.course == course);
             
             if(filteredCoursesArr == null || filteredCoursesArr == 0){
-                rej5("no results returned");
+                rej5("no results");
             } else {
                 res5(filteredCoursesArr);
             }
@@ -80,13 +80,13 @@ function getStudentsByCourse (course) {
 function getStudentsByNum (num) {
     return new Promise((res6, rej6)=>{
         if(dataCollection?.students == null || dataCollection?.students.length == 0){
-            rej6("no results returned");
+            rej6("no results");
         } else {
          
             const filteredStudentsArrByNum = dataCollection.students.filter(student => student.studentNum == num);
 
             if(filteredStudentsArrByNum.length == 0){
-                rej6("no results returned");
+                rej6("no results");
             } else {
                 res6(filteredStudentsArrByNum[0]);
             }
@@ -118,4 +118,21 @@ function addStudent (studentData) {
     });
 }
 
-module.exports = {initialize, getAllStudents, getTAs, getCourses, getStudentsByCourse, getStudentsByNum, addStudent};
+function getCourseById (courseCode) {
+    return new Promise((res8, rej8)=>{
+        if(dataCollection?.courses == null || dataCollection?.courses.length == 0){
+            rej8("no results");
+        } else {
+
+             const filteredCoursesByCode = dataCollection.courses.filter(course => course.courseCode == courseCode);
+
+            if(filteredCoursesByCode.length == 0){
+                rej8("no results");
+            } else {
+                res8(filteredCoursesByCode[0]);
+            }
+        }
+    });
+}
+
+module.exports = {initialize, getAllStudents, getTAs, getCourses, getStudentsByCourse, getStudentsByNum, addStudent, getCourseById};

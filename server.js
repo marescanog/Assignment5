@@ -64,7 +64,7 @@ app.get("/students", (req, res) => {
             res.render("students",{layout:"main", students: colDataRes});
         })
         .catch((colDataErr)=>{
-            res.render("students",{layout:"main", message: "no results"});
+            res.render("students",{layout:"main", message: colDataErr});
         });
     } else {
         collegeData.getAllStudents()
@@ -72,7 +72,7 @@ app.get("/students", (req, res) => {
             res.render("students",{layout:"main", students: colDataRes});
         })
         .catch((colDataErr)=>{
-            res.render("students",{layout:"main", message: "no results"});
+            res.render("students",{layout:"main", message: colDataErr});
         });
     }
 });
@@ -83,7 +83,17 @@ app.get("/courses", (req, res) => {
         res.render("courses",{layout:"main", courses: colDataRes});
     })
     .catch((colDataErr)=>{
-        res.render("courses",{layout:"main", message: "no results"});
+        res.render("courses",{layout:"main", message: colDataErr});
+    });
+});
+
+app.get("/course/:code", (req, res) => {
+    collegeData.getCourseById(req.params.code)
+    .then((colDataRes)=>{
+        res.render("course",{layout:"main", course: colDataRes});
+    })
+    .catch((colDataErr)=>{
+        res.render("courses",{layout:"main", message: colDataErr});
     });
 });
 
