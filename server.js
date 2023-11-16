@@ -22,7 +22,25 @@ var app = express();
 
 // Configure handlebars
 app.engine('.hbs', exphbs.engine({
-    extname:'.hbs'
+    extname:'.hbs',
+    helpers: {
+        navLink: function(url, options){
+            return `<li class="nav-item">
+            <a class="nav-link ${url == app.locals.activeRoute ? "active" : "" }"
+            href="${url}">${options.fn(this)}</a>
+            </li>`;
+        },
+        equal: function (lvalue, rvalue, options) {
+            if (arguments.length < 3)
+            throw new Error("Handlebars Helper equal needs 2 parameters");
+            if (lvalue != rvalue) {
+            return options.inverse(this);
+            } else {
+            return options.fn(this);
+            }
+        },
+           
+    }
 }));
 app.set('view engine', '.hbs');
 
@@ -31,6 +49,13 @@ app.set('view engine', '.hbs');
 app.use(express.static("public"));
 
 app.use(express.urlencoded({extended: true}));
+
+// adds activeRoute property your app.locals
+app.use(function(req,res,next){
+    let route = req.path.substring(1);
+    app.locals.activeRoute = "/" + (isNaN(route.split('/')[1]) ? route.replace(/\/(?!.*)/,"") : route.replace(/\/(.*)/,""));
+    next();
+})
 
 app.get("/students", (req, res) => {
     if(req.query.course){
