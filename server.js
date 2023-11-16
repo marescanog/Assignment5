@@ -1,5 +1,5 @@
 /********************************************************************************
-* WEB700 – Assignment 04
+* WEB700 – Assignment 05
 *
 * I declare that this assignment is my own work in accordance with Seneca's
 * Academic Integrity Policy:
@@ -15,9 +15,16 @@
 
 var HTTP_PORT = process.env.PORT || 8080;
 var express = require("express");
+const exphbs = require("express-handlebars");
 var path = require("path");
 var collegeData = require("./modules/collegeData.js");
 var app = express();
+
+// Configure handlebars
+app.engine('.hbs', exphbs.engine({
+    extname:'.hbs'
+}));
+app.set('view engine', '.hbs');
 
 // setup the static folder that static resources can load from
 // like images, css files, etc.
@@ -75,10 +82,6 @@ app.get("/student/:num", (req, res) => {
     });
 });
 
-app.get("/students/add", (req, res) => {
-    res.sendFile(path.join(__dirname,"/views/addStudent.html"));
-});
-
 app.post("/students/add", (req, res) => {
     collegeData.addStudent(req.body)
     .then((colDataRes)=>{
@@ -90,17 +93,20 @@ app.post("/students/add", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,"/views/home.html"));
+    res.render("home",{layout:"main"});
 });
 
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname,"/views/about.html"));
+    res.render("about",{layout:"main"});
 });
 
 app.get("/htmlDemo", (req, res) => {
-    res.sendFile(path.join(__dirname,"/views/htmlDemo.html"));
+    res.render("htmlDemo",{layout:"main"});
 });
 
+app.get("/students/add", (req, res) => {
+    res.render("addStudent",{layout:"main"});
+});
 
 // No matching route
 app.use((req, res) => {
