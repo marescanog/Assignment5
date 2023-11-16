@@ -77,6 +77,16 @@ app.get("/students", (req, res) => {
     }
 });
 
+app.get("/courses", (req, res) => {
+    collegeData.getCourses()
+    .then((colDataRes)=>{
+        res.render("courses",{layout:"main", courses: colDataRes});
+    })
+    .catch((colDataErr)=>{
+        res.render("courses",{layout:"main", message: "no results"});
+    });
+});
+
 app.get("/tas", (req, res) => {
     collegeData.getTAs()
     .then((colDataRes2)=>{
@@ -84,16 +94,6 @@ app.get("/tas", (req, res) => {
     })
     .catch((colDataErr2)=>{
         res.send({message: colDataErr2});
-    });
-});
-
-app.get("/courses", (req, res) => {
-    collegeData.getCourses()
-    .then((colDataRes)=>{
-        res.send(colDataRes);
-    })
-    .catch((colDataErr)=>{
-        res.send({message: colDataErr});
     });
 });
 
