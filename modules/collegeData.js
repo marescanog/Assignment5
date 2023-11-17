@@ -35,22 +35,6 @@ function getAllStudents () {
     });
 }
 
-function getTAs () {
-    return new Promise((res3, rej3)=>{
-        if(dataCollection?.students == null || dataCollection?.students.length == 0){
-            rej3("no results");
-        } else {
-            const filteredArr = dataCollection.students.filter(student => student.TA);
-            
-            if(filteredArr == null || filteredArr == 0){
-                rej3("no results");
-            } else {
-                res3(filteredArr);
-            }
-        }
-    });
-}
-
 function getCourses () {
     return new Promise((res4, rej4)=>{
         if(dataCollection?.courses == null || dataCollection?.courses.length == 0){
@@ -135,4 +119,21 @@ function getCourseById (courseCode) {
     });
 }
 
-module.exports = {initialize, getAllStudents, getTAs, getCourses, getStudentsByCourse, getStudentsByNum, addStudent, getCourseById};
+function updateStudent (studentData) {
+    return new Promise((res9, rej9)=>{
+        if(dataCollection?.students == null || dataCollection?.students.length == 0){
+            rej9("no results");
+        } else {
+
+            const foundIndex = dataCollection.students.findIndex((el)=>{ return el.studentNum == studentData.studentNum});
+
+            if(foundIndex >= 0 && dataCollection?.students[foundIndex]){
+                dataCollection.students[foundIndex] = studentData;
+            }
+
+            res9();
+        }
+    });
+}
+
+module.exports = {initialize, getAllStudents, getCourses, getStudentsByCourse, getStudentsByNum, addStudent, getCourseById, updateStudent};

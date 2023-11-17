@@ -97,28 +97,28 @@ app.get("/course/:code", (req, res) => {
     });
 });
 
-app.get("/tas", (req, res) => {
-    collegeData.getTAs()
-    .then((colDataRes2)=>{
-        res.send(colDataRes2);
-    })
-    .catch((colDataErr2)=>{
-        res.send({message: colDataErr2});
-    });
-});
-
 app.get("/student/:num", (req, res) => {
     collegeData.getStudentsByNum(req.params.num)
     .then((colDataRes)=>{
-        res.send(colDataRes);
+        res.render("student",{layout:"main", student: colDataRes});
+    })
+    .catch((colDataErr)=>{
+        res.render("student",{layout:"main", message: colDataErr});
+    });
+});
+
+app.post("/students/add", (req, res) => {
+    collegeData.addStudent(req.body)
+    .then((colDataRes)=>{
+        res.redirect("/students/");
     })
     .catch((colDataErr)=>{
         res.send({message: colDataErr});
     });
 });
 
-app.post("/students/add", (req, res) => {
-    collegeData.addStudent(req.body)
+app.post("/student/update", (req, res) => {
+    collegeData.updateStudent(req.body)
     .then((colDataRes)=>{
         res.redirect("/students/");
     })
