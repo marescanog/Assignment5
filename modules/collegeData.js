@@ -129,6 +129,7 @@ function updateStudent (studentData) {
 
             if(foundIndex >= 0 && dataCollection?.students[foundIndex]){
                 dataCollection.students[foundIndex] = studentData;
+                dataCollection.students[foundIndex].TA = studentData.TA ? true : false; // : Do not forget to correctly handle the "TA" checkbox data
             }
 
             res9();
